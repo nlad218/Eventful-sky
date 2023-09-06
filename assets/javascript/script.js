@@ -27,15 +27,3 @@ $(document).ready(function () {
     });
   });
 });
-
-// // Wait for the document to be fully loaded before adding event listeners
-// document.addEventListener("DOMContentLoaded", function () {
-//   // Find the "Start free trial" button by its class
-//   var startTrialButton = document.querySelector(".btn-primary");
-
-//   // Add a click event listener to the button
-//   startTrialButton.addEventListener("click", function () {
-//     // Redirect the user to another page
-//     window.location.href = "freetrial.html";
-//   });
-// });
