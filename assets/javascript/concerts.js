@@ -13,21 +13,22 @@ $.ajax({
       json._embedded.events &&
       json._embedded.events.length > 0
     ) {
-      // Assuming you want to display the artist's name of the first event in the response
-      var artistName = json._embedded.events[0].name;
-      var concertDate = json._embedded.events[0].dates.start.localDate;
-      var concertVenue = json._embedded.events[0]._embedded.venues[0].name;
-      var concertCity = json._embedded.events[0]._embedded.venues[0].city.name;
-      var concertState =
-        json._embedded.events[0]._embedded.venues[0].state.name;
+      // loops through each event
+      json._embedded.events.forEach(function (event) {
+        var artistName = event.name;
+        var concertDate = event.dates.start.localDate;
+        var concertVenue = event._embedded.venues[0].name;
+        var concertCity = event._embedded.venues[0].city.name;
+        var concertState = event._embedded.venues[0].state.name;
 
-      displayArtistInfo(
-        artistName,
-        concertDate,
-        concertVenue,
-        concertCity,
-        concertState
-      );
+        displayArtistInfo(
+          artistName,
+          concertDate,
+          concertVenue,
+          concertCity,
+          concertState
+        );
+      });
     } else {
       console.log("No events found.");
     }
