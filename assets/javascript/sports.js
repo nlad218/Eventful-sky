@@ -80,7 +80,7 @@ $(document).ready(function () {
   // Function to fetch sports events from Ticketmaster API
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
-    var sportsContainer = $("#sportsContainer");
+    var sportsContainer = $("#sportContainer");
 
     $.ajax({
       type: "GET",
@@ -122,5 +122,9 @@ $(document).ready(function () {
         console.error(`Error fetching sports events for ${city}: ${err}`);
       },
     });
+  }
+  function fetchWeatherAndSportsData(city) {
+    fetchWeatherData(city);
+    fetchSportsEvents(city);
   }
 });
