@@ -80,7 +80,7 @@ $(document).ready(function () {
   // Function to fetch sports events from Ticketmaster API
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
-    var sportsContainer = $("#concertsContainer");
+    var sportsContainer = $("#sportsContainer");
 
     $.ajax({
       type: "GET",
