@@ -77,7 +77,7 @@ $(document).ready(function () {
     });
   }
 
-  // Function to fetch sports events from Ticketmaster API
+  // Function to fetch sports events from Ticketmaster API and sort by date
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
     var sportsContainer = $("#sportContainer");
@@ -93,7 +93,15 @@ $(document).ready(function () {
           data._embedded.events &&
           data._embedded.events.length > 0
         ) {
-          // Display sports events
+          // Sort events by date
+          data._embedded.events.sort(function (a, b) {
+            return (
+              new Date(a.dates.start.localDate) -
+              new Date(b.dates.start.localDate)
+            );
+          });
+
+          // Display sports events in chronological order
           var eventsHtml = "<h2>Upcoming Sports Events</h2>";
 
           data._embedded.events.forEach(function (event) {
