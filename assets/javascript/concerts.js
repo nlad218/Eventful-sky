@@ -1,4 +1,8 @@
 var concertsContainer = $("#concertsContainer");
+var newYorkButton = $("#newYork");
+var losAngelesButton = $("#losAngeles");
+var chicagoButton = $("#chicago");
+var miamiButton = $("#miami");
 
 $.ajax({
   type: "GET",
@@ -38,6 +42,10 @@ $.ajax({
   },
 });
 
+newYorkButton.on("click", function () {
+  filterConcerts("New York");
+});
+
 function displayArtistInfo(
   artistName,
   concertDate,
@@ -46,6 +54,9 @@ function displayArtistInfo(
   concertState
 ) {
   console.log("I am in the artist info section");
+  var concertElement = $("<div></div>");
+  concertElement.data("city", concertCity);
+
   var artistNameElement = $("<h2></h2>");
   artistNameElement.text(artistName);
 
@@ -59,9 +70,19 @@ function displayArtistInfo(
   var stateElement = $("<p></p>");
   cityElement.text(concertCity + ", " + concertState);
 
-  concertsContainer.append(artistNameElement);
+  concertsContainer.append(concertElement);
+  concertElement.append(artistNameElement);
   artistNameElement.append(concertDateElement);
   concertDateElement.append(venueElement);
   venueElement.append(cityElement);
   cityElement.append(stateElement);
+}
+
+function filterConcerts(city) {
+  concertsContainer.empty();
+  $("#concertsContainer div").each(function () {
+    if ($(this).data("city") === city) {
+      concertsContainer.append($(this));
+    }
+  });
 }
