@@ -110,10 +110,20 @@ $(document).ready(function () {
             var venueName = event._embedded.venues[0].name;
             var eventCity = event._embedded.venues[0].city.name;
             var eventState = event._embedded.venues[0].state.name;
+            console.log(data);
+
+            var eventImage = "";
+            if (event.images && event.images.length > 0) {
+              eventImage = event.images[0].url;
+            }
+
+            var imageElement = $("<img>").attr("src", eventImage);
+            imageElement.attr("style", "width: 250px");
 
             eventsHtml += `
             <div class="event">
-              <h3>${eventName}</h3>
+            ${imageElement.prop("outerHTML")}
+              <p>${eventName}</p>
               <p>Date: ${eventDate}</p>
               <p>Venue: ${venueName}</p>
               <p>Location: ${eventCity}, ${eventState}</p>
