@@ -1,8 +1,16 @@
 var concertsContainer = $("#concertsContainer");
+
+var denverButton = $("#denver");
 var newYorkButton = $("#newYork");
-var losAngelesButton = $("#losAngeles");
 var chicagoButton = $("#chicago");
+var baltimoreDCButton = $("#baltimoreDC");
+var losAngelesButton = $("#losAngeles");
 var miamiButton = $("#miami");
+var dallasButton = $("#dallas");
+var bostonButton = $("#boston");
+
+// This will hold all the concerts data
+var allConcerts = [];
 
 $.ajax({
   type: "GET",
@@ -25,6 +33,16 @@ $.ajax({
         var concertCity = event._embedded.venues[0].city.name;
         var concertState = event._embedded.venues[0].state.name;
 
+        // store concert data in the allConcerts array
+        allConcerts.push({
+          artistName,
+          concertDate,
+          concertVenue,
+          concertCity,
+          concertState,
+        });
+
+        // display alll concerts initially
         displayArtistInfo(
           artistName,
           concertDate,
@@ -53,10 +71,6 @@ function displayArtistInfo(
   concertCity,
   concertState
 ) {
-  console.log("I am in the artist info section");
-  var concertElement = $("<div></div>");
-  concertElement.data("city", concertCity);
-
   var artistNameElement = $("<h2></h2>");
   artistNameElement.text(artistName);
 
@@ -70,19 +84,24 @@ function displayArtistInfo(
   var stateElement = $("<p></p>");
   cityElement.text(concertCity + ", " + concertState);
 
-  concertsContainer.append(concertElement);
-  concertElement.append(artistNameElement);
+  concertsContainer.append(artistNameElement);
   artistNameElement.append(concertDateElement);
   concertDateElement.append(venueElement);
   venueElement.append(cityElement);
   cityElement.append(stateElement);
 }
 
+// filter and display concerts based on the selected cities
 function filterConcerts(city) {
-  concertsContainer.empty();
-  $("#concertsContainer div").each(function () {
-    if ($(this).data("city") === city) {
-      concertsContainer.append($(this));
-    }
+  concertsContainer.empty(); // clear the container
+
+  allConcerts.forEach(function (concert) {
+    displayArtistInfo(
+      concert.artistName,
+      concert.concertDate,
+      concert.concertVenue,
+      concert.concertCity,
+      concert.concertState
+    );
   });
 }
