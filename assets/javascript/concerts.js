@@ -122,7 +122,8 @@ $(document).ready(function () {
 
             eventsHtml += `
             <div class="event">
-              <h3>${eventName}</h3>
+            ${imageElement.prop("outerHTML")}
+              <p>${eventName}</p>
               <p>Date: ${eventDate}</p>
               <p>Venue: ${venueName}</p>
               <p>Location: ${eventCity}, ${eventState}</p>
