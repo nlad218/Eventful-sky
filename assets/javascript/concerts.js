@@ -93,7 +93,15 @@ $(document).ready(function () {
           data._embedded.events &&
           data._embedded.events.length > 0
         ) {
-          // Display sports events
+          // Sort events by date
+          data._embedded.events.sort(function (a, b) {
+            return (
+              new Date(a.dates.start.localDate) -
+              new Date(b.dates.start.localDate)
+            );
+          });
+
+          // Display sports events (concerts) in chronological order
           var eventsHtml = "<h2>Upcoming Music Events</h2>";
 
           data._embedded.events.forEach(function (event) {
@@ -113,14 +121,13 @@ $(document).ready(function () {
             imageElement.attr("style", "width: 250px");
 
             eventsHtml += `
-              <div class="event">
-              ${imageElement.prop("outerHTML")}
-                <p>${eventName}</p>
-                <p>Date: ${eventDate}</p>
-                <p>Venue: ${venueName}</p>
-                <p>Location: ${eventCity}, ${eventState}</p>
-              </div>
-            `;
+            <div class="event">
+              <h3>${eventName}</h3>
+              <p>Date: ${eventDate}</p>
+              <p>Venue: ${venueName}</p>
+              <p>Location: ${eventCity}, ${eventState}</p>
+            </div>
+          `;
           });
 
           concertsContainer.html(eventsHtml);
