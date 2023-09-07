@@ -22,20 +22,31 @@ cities.forEach(function (city) {
 });
 
 function displayWeatherInfo(city, weatherData) {
-  var cityNameElement = $("<h2></h2>");
+  var weatherCard = $("<div></div>");
+  weatherCard.addClass("card mb-3");
+
+  var cardBody = $("<div></div>");
+  cardBody.addClass("card-body");
+
+  var cityNameElement = $("<h5></h5>");
+  cityNameElement.addClass("card-title");
   cityNameElement.text("Weather in " + city);
 
   var temperatureElement = $("<p></p>");
+  temperatureElement.addClass("card-text");
   temperatureElement.text(
     "Temperature: " + (weatherData.main.temp - 273.15).toFixed(2) + "°C"
   );
 
   var weatherDescriptionElement = $("<p></p>");
+  weatherDescriptionElement.addClass("card-text");
   weatherDescriptionElement.text(
     "Weather: " + weatherData.weather[0].description
   );
 
-  weatherContainer.append(cityNameElement);
-  cityNameElement.append(temperatureElement);
-  temperatureElement.append(weatherDescriptionElement);
+  weatherContainer.append(weatherCard);
+  weatherCard.append(cardBody);
+  cardBody.append(cityNameElement);
+  cardBody.append(temperatureElement);
+  cardBody.append(weatherDescriptionElement);
 }
