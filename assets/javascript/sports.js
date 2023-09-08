@@ -105,6 +105,10 @@ $(document).ready(function () {
 
           // Display sports events in chronological order
           var eventsHtml = "";
+          var favoriteButton = $("<button>")
+            .text("Add to Favorites")
+            .addClass("btn btn-primary");
+
           data._embedded.events.forEach(function (event) {
             var eventName = event.name;
             var eventDate = event.dates.start.localDate;
@@ -122,6 +126,7 @@ $(document).ready(function () {
 
             eventsHtml += `
                           <div class="col-md-6 mb-4 mt-5">
+                          ${favoriteButton.prop("outerHTML")}
                               <div class="event card">
                                   <a href="${eventUrl}">
                                       <img class="card-img-top" src="${eventImage}" alt="${eventName}">
