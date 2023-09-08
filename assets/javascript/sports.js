@@ -5,50 +5,42 @@ $(document).ready(function () {
   // Event listeners for the city buttons
   $("#denver").click(function () {
     selectedCity = "Denver";
-    fetchWeatherData(selectedCity);
-    fetchSportsEvents(selectedCity);
+    fetchWeatherAndSportsData(selectedCity);
   });
 
   $("#newYork").click(function () {
     selectedCity = "New York City";
-    fetchWeatherData(selectedCity);
-    fetchSportsEvents(selectedCity);
+    fetchWeatherAndSportsData(selectedCity);
   });
 
   $("#chicago").click(function () {
     selectedCity = "Chicago";
-    fetchWeatherData(selectedCity);
-    fetchSportsEvents(selectedCity);
+    fetchWeatherAndSportsData(selectedCity);
   });
 
   $("#baltimoreDC").click(function () {
     selectedCity = "Baltimore";
-    fetchWeatherData(selectedCity);
-    fetchSportsEvents(selectedCity);
+    fetchWeatherAndSportsData(selectedCity);
   });
 
   $("#losAngeles").click(function () {
     selectedCity = "Los Angeles";
-    fetchWeatherData(selectedCity);
-    fetchSportsEvents(selectedCity);
+    fetchWeatherAndSportsData(selectedCity);
   });
 
   $("#miami").click(function () {
     selectedCity = "Miami";
-    fetchWeatherData(selectedCity);
-    fetchSportsEvents(selectedCity);
+    fetchWeatherAndSportsData(selectedCity);
   });
 
   $("#dallas").click(function () {
     selectedCity = "Dallas";
-    fetchWeatherData(selectedCity);
-    fetchSportsEvents(selectedCity);
+    fetchWeatherAndSportsData(selectedCity);
   });
 
   $("#boston").click(function () {
     selectedCity = "Boston";
-    fetchWeatherData(selectedCity);
-    fetchSportsEvents(selectedCity);
+    fetchWeatherAndSportsData(selectedCity);
   });
 
   // Function to fetch weather data from OpenWeatherMap API
@@ -64,11 +56,11 @@ $(document).ready(function () {
       success: function (data) {
         // Display weather data
         var weatherHtml = `
-          <h2>Weather in ${city}</h2>
-          <p>Temperature: ${(data.main.temp - 273.15).toFixed(2)}°C</p>
-          <p>Weather: ${data.weather[0].description}</p>
-          <p>Humidity: ${data.main.humidity}%</p>
-        `;
+                  <h2>Weather in ${city}</h2>
+                  <p>Temperature: ${(data.main.temp - 273.15).toFixed(2)}°C</p>
+                  <p>Weather: ${data.weather[0].description}</p>
+                  <p>Humidity: ${data.main.humidity}%</p>
+              `;
         weatherContainer.html(weatherHtml);
       },
       error: function (xhr, status, err) {
@@ -80,7 +72,7 @@ $(document).ready(function () {
   // Function to fetch sports events from Ticketmaster API and sort by date
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
-    var sportsContainer = $("#sportContainer");
+    var sportsContainer = $("#eventsRow");
 
     $.ajax({
       type: "GET",
@@ -103,8 +95,7 @@ $(document).ready(function () {
           });
 
           // Display sports events in chronological order
-          var eventsHtml = "<h2>Upcoming Sports Events</h2>";
-
+          var eventsHtml = "";
           data._embedded.events.forEach(function (event) {
             var eventName = event.name;
             var eventDate = event.dates.start.localDate;
@@ -117,19 +108,24 @@ $(document).ready(function () {
             if (event.images && event.images.length > 0) {
               eventImage = event.images[0].url;
             }
-
             var imageElement = $("<img>").attr("src", eventImage);
             imageElement.attr("style", "width: 250px");
 
             eventsHtml += `
-              <div class="event">
-              <a href=${eventUrl}>${imageElement.prop("outerHTML")}</a>
-                <h3>${eventName}</h3>
-                <p>Date: ${eventDate}</p>
-                <p>Venue: ${venueName}</p>
-                <p>Location: ${eventCity}, ${eventState}</p>
-              </div>
-            `;
+                          <div class="col-md-6 mb-4 mt-5">
+                              <div class="event card">
+                                  <a href="${eventUrl}">
+                                      <img class="card-img-top" src="${eventImage}" alt="${eventName}">
+                                  </a>
+                                  <div class="card-body">
+                                      <h5 class="card-title">${eventName}</h5>
+                                      <p class="card-text">Date: ${eventDate}</p>
+                                      <p class="card-text">Venue: ${venueName}</p>
+                                      <p class="card-text">Location: ${eventCity}, ${eventState}</p>
+                                  </div>
+                              </div>
+                          </div>
+                      `;
           });
 
           sportsContainer.html(eventsHtml);
@@ -142,6 +138,8 @@ $(document).ready(function () {
       },
     });
   }
+
+  // Function to fetch weather data and sports events data
   function fetchWeatherAndSportsData(city) {
     fetchWeatherData(city);
     fetchSportsEvents(city);
