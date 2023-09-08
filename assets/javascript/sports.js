@@ -111,6 +111,7 @@ $(document).ready(function () {
             var venueName = event._embedded.venues[0].name;
             var eventCity = event._embedded.venues[0].city.name;
             var eventState = event._embedded.venues[0].state.name;
+            var eventUrl = event.url;
 
             var eventImage = "";
             if (event.images && event.images.length > 0) {
@@ -122,7 +123,7 @@ $(document).ready(function () {
 
             eventsHtml += `
               <div class="event">
-              ${imageElement.prop("outerHTML")}
+              <a href=${eventUrl}>${imageElement.prop("outerHTML")}</a>
                 <h3>${eventName}</h3>
                 <p>Date: ${eventDate}</p>
                 <p>Venue: ${venueName}</p>

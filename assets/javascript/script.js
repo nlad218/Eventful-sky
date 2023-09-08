@@ -34,5 +34,5 @@ var seeWhatsHappeningButton = document.querySelector(".btn-primary");
 // Add a click event listener to the button
 seeWhatsHappeningButton.addEventListener("click", function () {
   // Redirect the user to the "generalpage.html" when the button is clicked
-  window.location.href = "generalpage.html";
+  window.location.href = "select.html";
 });
