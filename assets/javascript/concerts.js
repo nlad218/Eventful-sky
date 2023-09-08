@@ -52,8 +52,8 @@ $(document).ready(function () {
   });
 
   function fetchWeatherData(city) {
-    var apiKey = "0210813d87f5e7c72760631806e4bd7d"; // Replace with your API key
-    var weatherContainer = $("#weatherContainer");
+    var apiKey = "0210813d87f5e7c72760631806e4bd7d";
+    var weatherContainer = $("#weatherRow"); // Change the container to #weatherRow
 
     $.ajax({
       type: "GET",
@@ -62,17 +62,23 @@ $(document).ready(function () {
       dataType: "json",
       success: function (data) {
         // Display weather data for 5 days
-        var forecastHtml = `<h2>5-Day Weather Forecast in ${city}</h2><div class="forecast-container">`;
+        var forecastHtml = `<h2>5-Day Weather Forecast in ${city}</h2><div class="forecast-container d-flex flex-nowrap overflow-auto">`;
 
         // Loop through the forecast data (every 8 hours)
         for (var i = 0; i < data.list.length; i += 8) {
           var forecast = data.list[i];
           forecastHtml += `
-            <div class="forecast-item">
-              <p>Date/Time: ${forecast.dt_txt}</p>
-              <p>Temperature: ${(forecast.main.temp - 273.15).toFixed(2)}°C</p>
-              <p>Weather: ${forecast.weather[0].description}</p>
-              <p>Humidity: ${forecast.main.humidity}%</p>
+            <div class="card m-2" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Date/Time: ${forecast.dt_txt}</h5>
+                <p class="card-text">Temperature: ${(
+                  forecast.main.temp - 273.15
+                ).toFixed(2)}°C</p>
+                <p class="card-text">Weather: ${
+                  forecast.weather[0].description
+                }</p>
+                <p class="card-text">Humidity: ${forecast.main.humidity}%</p>
+              </div>
             </div>
           `;
         }
