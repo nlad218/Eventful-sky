@@ -53,7 +53,7 @@ $(document).ready(function () {
 
   // Function to fetch weather data from OpenWeatherMap API
   function fetchWeatherData(city) {
-    var apiKey = "0210813d87f5e7c72760631806e4bd7d";
+    var apiKey = "0210813d87f5e7c72760631806e4bd7d"; // Replace with your API key
     var weatherContainer = $("#weatherContainer");
 
     $.ajax({
@@ -64,11 +64,11 @@ $(document).ready(function () {
       success: function (data) {
         // Display weather data
         var weatherHtml = `
-          <h2>Weather in ${city}</h2>
-          <p>Temperature: ${(data.main.temp - 273.15).toFixed(2)}°C</p>
-          <p>Weather: ${data.weather[0].description}</p>
-          <p>Humidity: ${data.main.humidity}%</p>
-        `;
+                <h2>Weather in ${city}</h2>
+                <p>Temperature: ${(data.main.temp - 273.15).toFixed(2)}°C</p>
+                <p>Weather: ${data.weather[0].description}</p>
+                <p>Humidity: ${data.main.humidity}%</p>
+              `;
         weatherContainer.html(weatherHtml);
       },
       error: function (xhr, status, err) {
@@ -79,7 +79,7 @@ $(document).ready(function () {
 
   // Function to fetch sports events from Ticketmaster API
   function fetchSportsEvents(city) {
-    var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
+    var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi"; // Replace with your API key
     var concertsContainer = $("#concertsContainer");
 
     $.ajax({
@@ -110,7 +110,7 @@ $(document).ready(function () {
             var venueName = event._embedded.venues[0].name;
             var eventCity = event._embedded.venues[0].city.name;
             var eventState = event._embedded.venues[0].state.name;
-            console.log(data);
+            var eventUrl = event.url;
 
             var eventImage = "";
             if (event.images && event.images.length > 0) {
@@ -121,14 +121,20 @@ $(document).ready(function () {
             imageElement.attr("style", "width: 250px");
 
             eventsHtml += `
-            <div class="event">
-            ${imageElement.prop("outerHTML")}
-              <p>${eventName}</p>
-              <p>Date: ${eventDate}</p>
-              <p>Venue: ${venueName}</p>
-              <p>Location: ${eventCity}, ${eventState}</p>
-            </div>
-          `;
+                        <div class="col-md-6 mb-4 mt-5">
+                          <div class="event card">
+                              <a href="${eventUrl}">
+                                  <img class="card-img-top" src="${eventImage}" alt="${eventName}">
+                              </a>
+                              <div class="card-body">
+                                  <h5 class="card-title">${eventName}</h5>
+                                  <p class="card-text">Date: ${eventDate}</p>
+                                  <p class="card-text">Venue: ${venueName}</p>
+                                  <p class="card-text">Location: ${eventCity}, ${eventState}</p>
+                              </div>
+                          </div>
+                        </div>
+                      `;
           });
 
           concertsContainer.html(eventsHtml);
