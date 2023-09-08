@@ -43,10 +43,39 @@ $(document).ready(function () {
     fetchWeatherAndSportsData(selectedCity);
   });
 
+  // Function to display weather data in individual cards
+  function displayWeatherCards(city, forecastData) {
+    var weatherRow = $("#weatherRow");
+
+    // Clear previous cards if any
+    weatherRow.empty();
+
+    // Loop through the forecast data (every 8 hours)
+    for (var i = 0; i < forecastData.list.length; i += 8) {
+      var forecast = forecastData.list[i];
+      var cardHtml = `
+        <div class="col-md-3 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Date/Time: ${forecast.dt_txt}</h5>
+              <p class="card-text">Temperature: ${(
+                forecast.main.temp - 273.15
+              ).toFixed(2)}°C</p>
+              <p class="card-text">Weather: ${
+                forecast.weather[0].description
+              }</p>
+              <p class="card-text">Humidity: ${forecast.main.humidity}%</p>
+            </div>
+          </div>
+        </div>
+      `;
+      weatherRow.append(cardHtml);
+    }
+  }
+
   // Function to fetch weather data from OpenWeatherMap API for 5 days
   function fetchWeatherData(city) {
     var apiKey = "0210813d87f5e7c72760631806e4bd7d";
-    var weatherContainer = $("#weatherContainer");
 
     $.ajax({
       type: "GET",
@@ -54,30 +83,15 @@ $(document).ready(function () {
       async: true,
       dataType: "json",
       success: function (data) {
-        // Display weather data for 5 days
-        var forecastHtml = `<h2>5-Day Weather Forecast in ${city}</h2><div class="forecast-container">`;
-
-        // Loop through the forecast data (every 8 hours)
-        for (var i = 0; i < data.list.length; i += 8) {
-          var forecast = data.list[i];
-          forecastHtml += `
-            <div class="forecast-item">
-              <p>Date/Time: ${forecast.dt_txt}</p>
-              <p>Temperature: ${(forecast.main.temp - 273.15).toFixed(2)}°C</p>
-              <p>Weather: ${forecast.weather[0].description}</p>
-              <p>Humidity: ${forecast.main.humidity}%</p>
-            </div>
-          `;
-        }
-
-        forecastHtml += "</div>";
-        weatherContainer.html(forecastHtml);
+        // Display weather data in individual cards
+        displayWeatherCards(city, data);
       },
       error: function (xhr, status, err) {
         console.error(`Error fetching weather data for ${city}: ${err}`);
       },
     });
   }
+
   // Function to fetch sports events from Ticketmaster API and sort by date
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
