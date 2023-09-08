@@ -43,32 +43,41 @@ $(document).ready(function () {
     fetchWeatherAndSportsData(selectedCity);
   });
 
-  // Function to fetch weather data from OpenWeatherMap API
+  // Function to fetch weather data from OpenWeatherMap API for 5 days
   function fetchWeatherData(city) {
     var apiKey = "0210813d87f5e7c72760631806e4bd7d";
     var weatherContainer = $("#weatherContainer");
 
     $.ajax({
       type: "GET",
-      url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`,
+      url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`,
       async: true,
       dataType: "json",
       success: function (data) {
-        // Display weather data
-        var weatherHtml = `
-                  <h2>Weather in ${city}</h2>
-                  <p>Temperature: ${(data.main.temp - 273.15).toFixed(2)}°C</p>
-                  <p>Weather: ${data.weather[0].description}</p>
-                  <p>Humidity: ${data.main.humidity}%</p>
-              `;
-        weatherContainer.html(weatherHtml);
+        // Display weather data for 5 days
+        var forecastHtml = `<h2>5-Day Weather Forecast in ${city}</h2><div class="forecast-container">`;
+
+        // Loop through the forecast data (every 8 hours)
+        for (var i = 0; i < data.list.length; i += 8) {
+          var forecast = data.list[i];
+          forecastHtml += `
+            <div class="forecast-item">
+              <p>Date/Time: ${forecast.dt_txt}</p>
+              <p>Temperature: ${(forecast.main.temp - 273.15).toFixed(2)}°C</p>
+              <p>Weather: ${forecast.weather[0].description}</p>
+              <p>Humidity: ${forecast.main.humidity}%</p>
+            </div>
+          `;
+        }
+
+        forecastHtml += "</div>";
+        weatherContainer.html(forecastHtml);
       },
       error: function (xhr, status, err) {
         console.error(`Error fetching weather data for ${city}: ${err}`);
       },
     });
   }
-
   // Function to fetch sports events from Ticketmaster API and sort by date
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
