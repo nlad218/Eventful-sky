@@ -140,11 +140,12 @@ $(document).ready(function () {
 
             eventsHtml += `
                           <div class="col-md-6 mb-4 mt-5">
-                          ${favoriteButton.prop("outerHTML")}
                               <div class="event card">
-                                  <a href="${eventUrl}">
-                                      <img class="card-img-top" src="${eventImage}" alt="${eventName}">
-                                  </a>
+                              ${favoriteButton.prop("outerHTML")}
+                              <img class="card-img-none" src="${eventImage}" alt="${eventName}">
+                              <a href="${eventUrl}">
+                              <div class="alert alert-primary custom-alert" role="alert">Click Here to Purchase Tickets!</div>
+                              </a>
                                   <div class="card-body">
                                       <h5 class="card-title">${eventName}</h5>
                                       <p class="card-text">Date: ${eventDate}</p>
