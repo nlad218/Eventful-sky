@@ -157,6 +157,41 @@ $(document).ready(function () {
           });
 
           sportsContainer.html(eventsHtml);
+          // Event listener for "Add to Favorites" buttons
+          $(".btn-primary").click(function () {
+            var eventIndex = $(this).closest(".col-md-6").index();
+            var event = data._embedded.events[eventIndex];
+
+            // Retrieve existing favorites from local storage or initialize an empty array
+            var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+            // Check if the event is already in favorites
+            var isEventInFavorites = favorites.some(function (favEvent) {
+              return favEvent.id === event.id;
+            });
+
+            if (!isEventInFavorites) {
+              // Add the event to favorites
+              favorites.push({
+                id: event.id,
+                name: event.name,
+                date: event.dates.start.localDate,
+                venue: event._embedded.venues[0].name,
+                location: `${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.name}`,
+                image: event.images[0].url,
+                url: event.url,
+              });
+
+              // Store updated favorites in local storage
+              localStorage.setItem("favorites", JSON.stringify(favorites));
+
+              // Display a confirmation message or update UI as needed
+              alert("Event added to favorites!");
+            } else {
+              // Display a message indicating that the event is already in favorites
+              alert("Event is already in favorites.");
+            }
+          });
         } else {
           sportsContainer.html("<p>No sports events found.</p>");
         }

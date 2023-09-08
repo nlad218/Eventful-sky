@@ -166,4 +166,57 @@ $(document).ready(function () {
       },
     });
   }
+
+  // Event listener for the "Add to Favorites" button
+  $("#concertsContainer").on("click", ".btn-primary", function () {
+    // Get the event data associated with the clicked button
+    var eventCard = $(this).closest(".event");
+    var eventName = eventCard.find(".card-title").text();
+    var eventDate = eventCard
+      .find(".card-text:eq(0)")
+      .text()
+      .replace("Date: ", "");
+    var venueName = eventCard
+      .find(".card-text:eq(1)")
+      .text()
+      .replace("Venue: ", "");
+    var eventLocation = eventCard
+      .find(".card-text:eq(2)")
+      .text()
+      .replace("Location: ", "");
+    var eventImage = eventCard.find("img").attr("src");
+
+    // Create an object to represent the event
+    var eventObject = {
+      name: eventName,
+      date: eventDate,
+      venue: venueName,
+      location: eventLocation,
+      image: eventImage,
+    };
+
+    // Retrieve existing favorites from local storage or create an empty array
+    var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    // Check if the event is already in favorites
+    var isEventInFavorites = favorites.some(function (favorite) {
+      return (
+        favorite.name === eventObject.name && favorite.date === eventObject.date
+      );
+    });
+
+    if (!isEventInFavorites) {
+      // Add the event to favorites
+      favorites.push(eventObject);
+
+      // Update the local storage with the updated favorites
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+
+      // Provide user feedback (you can customize this)
+      alert("Event added to favorites!");
+    } else {
+      // Provide user feedback if the event is already in favorites (you can customize this)
+      alert("Event is already in favorites!");
+    }
+  });
 });
