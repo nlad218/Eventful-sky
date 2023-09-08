@@ -93,7 +93,15 @@ $(document).ready(function () {
           data._embedded.events &&
           data._embedded.events.length > 0
         ) {
-          // Display sports events
+          // Sort events by date
+          data._embedded.events.sort(function (a, b) {
+            return (
+              new Date(a.dates.start.localDate) -
+              new Date(b.dates.start.localDate)
+            );
+          });
+
+          // Display sports events (concerts) in chronological order
           var eventsHtml = "<h2>Upcoming Music Events</h2>";
 
           data._embedded.events.forEach(function (event) {
@@ -102,15 +110,25 @@ $(document).ready(function () {
             var venueName = event._embedded.venues[0].name;
             var eventCity = event._embedded.venues[0].city.name;
             var eventState = event._embedded.venues[0].state.name;
+            console.log(data);
+
+            var eventImage = "";
+            if (event.images && event.images.length > 0) {
+              eventImage = event.images[0].url;
+            }
+
+            var imageElement = $("<img>").attr("src", eventImage);
+            imageElement.attr("style", "width: 250px");
 
             eventsHtml += `
-              <div class="event">
-                <h3>${eventName}</h3>
-                <p>Date: ${eventDate}</p>
-                <p>Venue: ${venueName}</p>
-                <p>Location: ${eventCity}, ${eventState}</p>
-              </div>
-            `;
+            <div class="event">
+            ${imageElement.prop("outerHTML")}
+              <p>${eventName}</p>
+              <p>Date: ${eventDate}</p>
+              <p>Venue: ${venueName}</p>
+              <p>Location: ${eventCity}, ${eventState}</p>
+            </div>
+          `;
           });
 
           concertsContainer.html(eventsHtml);

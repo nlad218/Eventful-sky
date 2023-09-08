@@ -77,23 +77,32 @@ $(document).ready(function () {
     });
   }
 
-  // Function to fetch sports events from Ticketmaster API
+  // Function to fetch sports events from Ticketmaster API and sort by date
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
     var sportsContainer = $("#sportContainer");
 
     $.ajax({
       type: "GET",
-      url: `https://app.ticketmaster.com/discovery/v2/events.json?city=${city}&apikey=${apiKey}`,
+      url: `https://app.ticketmaster.com/discovery/v2/events.json?city=${city}&segmentId=KZFzniwnSyZfZ7v7nE&apikey=${apiKey}`,
       async: true,
       dataType: "json",
       success: function (data) {
+        console.log(data);
         if (
           data._embedded &&
           data._embedded.events &&
           data._embedded.events.length > 0
         ) {
-          // Display sports events
+          // Sort events by date
+          data._embedded.events.sort(function (a, b) {
+            return (
+              new Date(a.dates.start.localDate) -
+              new Date(b.dates.start.localDate)
+            );
+          });
+
+          // Display sports events in chronological order
           var eventsHtml = "<h2>Upcoming Sports Events</h2>";
 
           data._embedded.events.forEach(function (event) {
@@ -103,8 +112,17 @@ $(document).ready(function () {
             var eventCity = event._embedded.venues[0].city.name;
             var eventState = event._embedded.venues[0].state.name;
 
+            var eventImage = "";
+            if (event.images && event.images.length > 0) {
+              eventImage = event.images[0].url;
+            }
+
+            var imageElement = $("<img>").attr("src", eventImage);
+            imageElement.attr("style", "width: 250px");
+
             eventsHtml += `
               <div class="event">
+              ${imageElement.prop("outerHTML")}
                 <h3>${eventName}</h3>
                 <p>Date: ${eventDate}</p>
                 <p>Venue: ${venueName}</p>
