@@ -84,10 +84,11 @@ $(document).ready(function () {
 
     $.ajax({
       type: "GET",
-      url: `https://app.ticketmaster.com/discovery/v2/events.json?city=${city}&apikey=${apiKey}`,
+      url: `https://app.ticketmaster.com/discovery/v2/events.json?city=${city}&segmentId=KZFzniwnSyZfZ7v7nE&apikey=${apiKey}`,
       async: true,
       dataType: "json",
       success: function (data) {
+        console.log(data);
         if (
           data._embedded &&
           data._embedded.events &&
