@@ -120,7 +120,7 @@ $(document).ready(function () {
           var eventsHtml = "<h2>Upcoming Music Events</h2>";
           var favoriteButton = $("<button>")
             .text("Add to Favorites")
-            .addClass("btn btn-primary");
+            .addClass("btn btn-primary favorites");
 
           data._embedded.events.forEach(function (event) {
             var eventName = event.name;
@@ -169,7 +169,7 @@ $(document).ready(function () {
   }
 
   // Event listener for the "Add to Favorites" button
-  $("#concertsContainer").on("click", ".btn-primary", function () {
+  $("#concertsContainer").on("click", ".favorites", function () {
     // Get the event data associated with the clicked button
     var eventCard = $(this).closest(".event");
     var eventName = eventCard.find(".card-title").text();
