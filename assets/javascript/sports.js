@@ -53,10 +53,8 @@ $(document).ready(function () {
       async: true,
       dataType: "json",
       success: function (data) {
-        // Display weather data for 5 days
         var forecastHtml = `<h2>5-Day Weather Forecast in ${city}</h2><div class="forecast-container d-flex flex-nowrap overflow-auto">`;
 
-        // Loop through the forecast data (every 8 hours)
         for (var i = 0; i < data.list.length; i += 8) {
           var forecast = data.list[i];
           forecastHtml += `
@@ -89,16 +87,13 @@ $(document).ready(function () {
     var eventIndex = $(this).closest(".col-md-3").index();
     var event = sportsEvents[selectedCity][eventIndex];
 
-    // Retrieve existing favorites from local storage or initialize an empty array
     var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-    // Check if the event is already in favorites
     var isEventInFavorites = favorites.some(function (favEvent) {
       return favEvent.id === event.id;
     });
 
     if (!isEventInFavorites) {
-      // Add the event to favorites with additional data
       favorites.push({
         id: event.id,
         name: event.name,
@@ -108,10 +103,9 @@ $(document).ready(function () {
         image:
           event.images && event.images.length > 0 ? event.images[0].url : "",
         url: event.url,
-        link: event.url, // Store the event link
+        link: event.url,
       });
 
-      // Store updated favorites in local storage
       localStorage.setItem("favorites", JSON.stringify(favorites));
 
       // Display a confirmation message or update UI as needed
@@ -144,13 +138,11 @@ $(document).ready(function () {
       async: true,
       dataType: "json",
       success: function (data) {
-        console.log(data);
         if (
           data._embedded &&
           data._embedded.events &&
           data._embedded.events.length > 0
         ) {
-          // Sort events by date
           data._embedded.events.sort(function (a, b) {
             return (
               new Date(a.dates.start.localDate) -
@@ -158,31 +150,33 @@ $(document).ready(function () {
             );
           });
 
-          // Store sports events data in the object
           sportsEvents[city] = data._embedded.events;
 
-          // Display sports events in chronological order
           var eventsHtml = "";
           var favoriteButton = $("<button>")
             .text("Add to Favorites")
             .addClass("btn btn-primary favorites");
 
-          data._embedded.events.forEach(function (event) {
+          data._embedded.events.forEach(function (event, index) {
             var eventName = event.name;
             var eventDate = event.dates.start.localDate;
             var venueName = event._embedded.venues[0].name;
             var eventCity = event._embedded.venues[0].city.name;
             var eventState = event._embedded.venues[0].state.name;
             var eventUrl = event.url;
-
             var eventImage = "";
+
             if (event.images && event.images.length > 0) {
               eventImage = event.images[0].url;
             }
 
+            if (index % 4 === 0) {
+              eventsHtml += '<div class="row">'; // Start a new row at the beginning of each group of 4
+            }
+
             eventsHtml += `
               <div class="col-md-3 mb-4 mt-5">
-                <div class="event card">
+                <div class="event card h-100">
                   ${favoriteButton.prop("outerHTML")}
                   <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
                   <a href="${eventUrl}">
@@ -197,20 +191,24 @@ $(document).ready(function () {
                 </div>
               </div>
             `;
+
+            if (index % 4 === 3 || index === data._embedded.events.length - 1) {
+              eventsHtml += "</div>"; // End the row at the end of each group of 4 or at the last item
+            }
           });
 
           sportsContainer.html(eventsHtml);
         } else {
-          sportsContainer.html("<p>No sports events found.</p>");
+          sportsContainer.html("<h2>No events found.</h2>");
         }
       },
       error: function (xhr, status, err) {
-        console.error(`Error fetching sports events for ${city}: ${err}`);
+        console.error(`Error fetching sports events data for ${city}: ${err}`);
       },
     });
   }
 
-  // Function to fetch weather data and sports events data
+  // Function to fetch weather data and sports events data for the selected city
   function fetchWeatherAndSportsData(city) {
     fetchWeatherData(city);
     fetchSportsEvents(city);
