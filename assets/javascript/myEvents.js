@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Display saved events
   favorites.forEach(function (event) {
-    var listItem = document.createElement("li");
+    var listItem = document.createElement("p");
     listItem.innerHTML = `
-          <img src="${event.image}" alt="${event.name}" style="max-width: 100px;">
+          <a href="${event.url}"><img src="${event.image}" alt="${event.name}" style="max-width: 100px;"></a>
           <h3>${event.name}</h3>
           <p>Date: ${event.date}</p>
           <p>Venue: ${event.venue}</p>
