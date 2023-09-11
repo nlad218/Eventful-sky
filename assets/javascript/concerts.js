@@ -237,5 +237,5 @@ $(document).ready(function () {
       // Provide user feedback if the event is already in favorites
       alert("Event is already in favorites!");
     }
-  });
+  }
 });
