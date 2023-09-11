@@ -117,7 +117,7 @@ $(document).ready(function () {
           });
 
           // Display sports events (concerts) in chronological order
-          var eventsHtml = "<h2>Upcoming Music Events</h2>";
+          var eventsHtml = "";
           var favoriteButton = $("<button>")
             .text("Add to Favorites")
             .addClass("btn btn-primary favorites");
@@ -138,22 +138,22 @@ $(document).ready(function () {
             var imageElement = $("<img>").attr("src", eventImage);
 
             eventsHtml += `
-                        <div class="col-md-3 mb-4 mt-5">
-                          <div class="event card">
-                          ${favoriteButton.prop("outerHTML")}
-                              <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
-                              <a href="${eventUrl}">
-                              <div class="alert alert-primary custom-alert" role="alert">Click Here to Purchase Tickets!</div>
-                              </a>
-                              <div class="card-body">
-                                  <h5 class="card-title">${eventName}</h5>
-                                  <p class="card-text">Date: ${eventDate}</p>
-                                  <p class="card-text">Venue: ${venueName}</p>
-                                  <p class="card-text">Location: ${eventCity}, ${eventState}</p>
-                              </div>
+                    <div class="col-md-3 mb-4 mt-5">
+                      <div class="event card">
+                      ${favoriteButton.prop("outerHTML")}
+                          <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
+                          <a href="${eventUrl}">
+                          <div class="alert alert-primary custom-alert" role="alert">Click Here to Purchase Tickets!</div>
+                          </a>
+                          <div class="card-body">
+                              <h5 class="card-title">${eventName}</h5>
+                              <p class="card-text">Date: ${eventDate}</p>
+                              <p class="card-text">Venue: ${venueName}</p>
+                              <p class="card-text">Location: ${eventCity}, ${eventState}</p>
                           </div>
-                        </div>
-                      `;
+                      </div>
+                    </div>
+                  `;
           });
 
           concertsContainer.html(eventsHtml);
