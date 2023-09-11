@@ -106,14 +106,15 @@ $(document).ready(function () {
     });
 
     if (!isEventInFavorites) {
-      // Add the event to favorites
+      // Add the event to favorites with additional data
       favorites.push({
         id: event.id,
         name: event.name,
-        date: event.date,
-        venue: event.venue,
-        location: event.location,
-        image: event.image,
+        date: event.dates.start.localDate,
+        venue: event._embedded.venues[0].name,
+        location: `${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.name}`,
+        image:
+          event.images && event.images.length > 0 ? event.images[0].url : "",
         url: event.url,
       });
 
