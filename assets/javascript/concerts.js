@@ -213,8 +213,17 @@ $(document).ready(function () {
     displayFavorites();
   }
 
-  function displayFavorites() {
-    // Get the favorites from the localStorage
+    // Create an object to represent the event
+    var eventObject = {
+      name: eventName,
+      date: eventDate,
+      venue: venueName,
+      location: eventLocation,
+      image: eventImage,
+      link: eventLink, // Store the event link
+    };
+
+    // Retrieve existing favorites from local storage or create an empty array
     var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
     // Check if the event is already in favorites
@@ -232,10 +241,18 @@ $(document).ready(function () {
       localStorage.setItem("favorites", JSON.stringify(favorites));
 
       // Provide user feedback
-      alert("Event added to favorites!");
+      $("#myModal .modal-title").text("Event added to favorites!");
+      $("#myModal .modal-body").text(
+        "You have successfully added this event to your favorites."
+      );
+      $("#myModal").modal("show");
     } else {
       // Provide user feedback if the event is already in favorites
-      alert("Event is already in favorites!");
+      $("#myModal .modal-title").text("Event is already in favorites!");
+      $("#myModal .modal-body").text(
+        "This event is already in your favorites."
+      );
+      $("#myModal").modal("show");
     }
-  }
+  });
 });
