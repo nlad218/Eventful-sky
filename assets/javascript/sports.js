@@ -121,7 +121,7 @@ $(document).ready(function () {
           var eventsHtml = "";
           var favoriteButton = $("<button>")
             .text("Add to Favorites")
-            .addClass("btn btn-primary");
+            .addClass("btn btn-primary favorites");
 
           data._embedded.events.forEach(function (event) {
             var eventName = event.name;
