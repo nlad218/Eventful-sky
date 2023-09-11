@@ -13,3 +13,13 @@
   border-bottom-left-radius: 0%;
   border-bottom-right-radius: 0%;
 }
+
+.event-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card {
+  height: 100%;
+}
