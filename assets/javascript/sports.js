@@ -114,10 +114,18 @@ $(document).ready(function () {
       localStorage.setItem("favorites", JSON.stringify(favorites));
 
       // Display a confirmation message or update UI as needed
-      alert("Event added to favorites!");
+      $("#myModal .modal-title").text("Event added to favorites!");
+      $("#myModal .modal-body").text(
+        "You have successfully added this event to your favorites."
+      );
+      $("#myModal").modal("show");
     } else {
       // Display a message indicating that the event is already in favorites
-      alert("Event is already in favorites.");
+      $("#myModal .modal-title").text("Event is already in favorites!");
+      $("#myModal .modal-body").text(
+        "This event is already in your favorites."
+      );
+      $("#myModal").modal("show");
     }
   });
 
