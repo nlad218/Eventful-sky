@@ -92,7 +92,6 @@ $(document).ready(function () {
     });
   }
 
-  // Function to fetch sports events from Ticketmaster API
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
     var concertsContainer = $("#concertsContainer");
@@ -117,12 +116,12 @@ $(document).ready(function () {
           });
 
           // Display sports events (concerts) in chronological order
-          var eventsHtml = "";
+          var eventsHtml = "<div class='row'>"; // Start a new row here
           var favoriteButton = $("<button>")
             .text("Add to Favorites")
             .addClass("btn btn-primary favorites");
 
-          data._embedded.events.forEach(function (event) {
+          data._embedded.events.forEach(function (event, index) {
             var eventName = event.name;
             var eventDate = event.dates.start.localDate;
             var venueName = event._embedded.venues[0].name;
@@ -139,7 +138,7 @@ $(document).ready(function () {
 
             eventsHtml += `
                     <div class="col-md-3 mb-4 mt-5">
-                      <div class="event card">
+                      <div class="event card h-100">
                       ${favoriteButton.prop("outerHTML")}
                           <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
                           <a href="${eventUrl}">
@@ -154,8 +153,16 @@ $(document).ready(function () {
                       </div>
                     </div>
                   `;
+
+            if (
+              (index + 1) % 4 === 0 &&
+              index !== data._embedded.events.length - 1
+            ) {
+              eventsHtml += "</div><div class='row'>"; // End the current row and start a new one every 4th index
+            }
           });
 
+          eventsHtml += "</div>"; // End the row here
           concertsContainer.html(eventsHtml);
         } else {
           concertsContainer.html("<p>No music events found.</p>");
@@ -166,6 +173,7 @@ $(document).ready(function () {
       },
     });
   }
+
   // Event listener for the "Add to Favorites" button
   $("#concertsContainer").on("click", ".favorites", function () {
     // Get the event data associated with the clicked button
@@ -183,41 +191,59 @@ $(document).ready(function () {
       .find(".card-text:eq(2)")
       .text()
       .replace("Location: ", "");
-    var eventImage = eventCard.find("img").attr("src");
-    var eventLink = eventCard.find("a").attr("href"); // Get the event link
+    var eventImage = eventCard.find(".event-image").attr("src");
 
-    // Create an object to represent the event
-    var eventObject = {
+    // Save the event data to the favorites
+    saveToFavorites({
       name: eventName,
       date: eventDate,
       venue: venueName,
       location: eventLocation,
       image: eventImage,
-      link: eventLink, // Store the event link
-    };
+    });
+  });
 
-    // Retrieve existing favorites from local storage or create an empty array
+  function saveToFavorites(eventData) {
+    // Save the event data to the localStorage
+    var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    favorites.push(eventData);
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+
+    // Update the favorites display
+    displayFavorites();
+  }
+
+  function displayFavorites() {
+    // Get the favorites from the localStorage
     var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-    // Check if the event is already in favorites
-    var isEventInFavorites = favorites.some(function (favorite) {
-      return (
-        favorite.name === eventObject.name && favorite.date === eventObject.date
-      );
+    // Display the favorites in the #favoritesContainer
+    var favoritesContainer = $("#favoritesContainer");
+    var favoritesHtml = "<h2>My Favorites</h2>";
+
+    favorites.forEach(function (favorite) {
+      favoritesHtml += `
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="${favorite.image}" class="img-fluid rounded-start" alt="${favorite.name}">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">${favorite.name}</h5>
+                <p class="card-text">Date: ${favorite.date}</p>
+                <p class="card-text">Venue: ${favorite.venue}</p>
+                <p class="card-text">Location: ${favorite.location}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
     });
 
-    if (!isEventInFavorites) {
-      // Add the event to favorites
-      favorites.push(eventObject);
+    favoritesContainer.html(favoritesHtml);
+  }
 
-      // Update the local storage with the updated favorites
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-
-      // Provide user feedback
-      alert("Event added to favorites!");
-    } else {
-      // Provide user feedback if the event is already in favorites
-      alert("Event is already in favorites!");
-    }
-  });
+  // Initial display of favorites
+  displayFavorites();
 });
