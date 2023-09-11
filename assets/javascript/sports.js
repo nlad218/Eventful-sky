@@ -92,6 +92,45 @@ $(document).ready(function () {
     });
   }
 
+  // Event listener for "Add to Favorites" buttons
+  $("#eventsRow").on("click", ".favorites", function () {
+    var eventIndex = $(this).closest(".col-md-3").index();
+    var event = sportsEvents[selectedCity][eventIndex];
+
+    // Retrieve existing favorites from local storage or initialize an empty array
+    var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    // Check if the event is already in favorites
+    var isEventInFavorites = favorites.some(function (favEvent) {
+      return favEvent.id === event.id;
+    });
+
+    if (!isEventInFavorites) {
+      // Add the event to favorites
+      favorites.push({
+        id: event.id,
+        name: event.name,
+        date: event.date,
+        venue: event.venue,
+        location: event.location,
+        image: event.image,
+        url: event.url,
+      });
+
+      // Store updated favorites in local storage
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+
+      // Display a confirmation message or update UI as needed
+      alert("Event added to favorites!");
+    } else {
+      // Display a message indicating that the event is already in favorites
+      alert("Event is already in favorites.");
+    }
+  });
+
+  // Define an object to store sports events data for each city
+  var sportsEvents = {};
+
   // Function to fetch sports events from Ticketmaster API and sort by date
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
@@ -117,6 +156,9 @@ $(document).ready(function () {
             );
           });
 
+          // Store sports events data in the object
+          sportsEvents[city] = data._embedded.events;
+
           // Display sports events in chronological order
           var eventsHtml = "";
           var favoriteButton = $("<button>")
@@ -135,64 +177,27 @@ $(document).ready(function () {
             if (event.images && event.images.length > 0) {
               eventImage = event.images[0].url;
             }
-            var imageElement = $("<img>").attr("src", eventImage);
-            // imageElement.attr("style", "width: 250px");
 
             eventsHtml += `
-                          <div class="col-md-3 mb-4 mt-5">
-                              <div class="event card">
-                              ${favoriteButton.prop("outerHTML")}
-                              <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
-                              <a href="${eventUrl}">
-                              <div class="alert alert-primary custom-alert" role="alert">Click Here to Purchase Tickets!</div>
-                              </a>
-                                  <div class="card-body">
-                                      <h5 class="card-title">${eventName}</h5>
-                                      <p class="card-text">Date: ${eventDate}</p>
-                                      <p class="card-text">Venue: ${venueName}</p>
-                                      <p class="card-text">Location: ${eventCity}, ${eventState}</p>
-                                  </div>
-                              </div>
-                          </div>
-                      `;
+              <div class="col-md-3 mb-4 mt-5">
+                <div class="event card">
+                  ${favoriteButton.prop("outerHTML")}
+                  <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
+                  <a href="${eventUrl}">
+                    <div class="alert alert-primary custom-alert" role="alert">Click Here to Purchase Tickets!</div>
+                  </a>
+                  <div class="card-body">
+                    <h5 class="card-title">${eventName}</h5>
+                    <p class="card-text">Date: ${eventDate}</p>
+                    <p class="card-text">Venue: ${venueName}</p>
+                    <p class="card-text">Location: ${eventCity}, ${eventState}</p>
+                  </div>
+                </div>
+              </div>
+            `;
           });
 
           sportsContainer.html(eventsHtml);
-          // Event listener for "Add to Favorites" buttons
-          $(".btn-primary").click(function () {
-            var eventIndex = $(this).closest(".col-md-6").index();
-            var event = data._embedded.events[eventIndex];
-
-            // Retrieve existing favorites from local storage or initialize an empty array
-            var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-            // Check if the event is already in favorites
-            var isEventInFavorites = favorites.some(function (favEvent) {
-              return favEvent.id === event.id;
-            });
-
-            if (!isEventInFavorites) {
-              // Add the event to favorites
-              favorites.push({
-                id: event.id,
-                name: event.name,
-                date: event.dates.start.localDate,
-                venue: event._embedded.venues[0].name,
-                location: `${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.name}`,
-                image: event.images[0].url,
-                url: event.url,
-              });
-
-              // Store updated favorites in local storage
-              localStorage.setItem("favorites", JSON.stringify(favorites));
-
-              // Display a confirmation message or update UI as needed
-              alert("Event added to favorites!");
-            } else {
-              // Display a message indicating that the event is already in favorites
-              alert("Event is already in favorites.");
-            }
-          });
         } else {
           sportsContainer.html("<p>No sports events found.</p>");
         }
