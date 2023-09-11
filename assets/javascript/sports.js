@@ -42,7 +42,6 @@ $(document).ready(function () {
     selectedCity = "Boston";
     fetchWeatherAndSportsData(selectedCity);
   });
-
   function fetchWeatherData(city) {
     var apiKey = "0210813d87f5e7c72760631806e4bd7d";
     var weatherContainer = $("#weatherRow");
@@ -108,6 +107,7 @@ $(document).ready(function () {
         image:
           event.images && event.images.length > 0 ? event.images[0].url : "",
         url: event.url,
+        link: event.url, // Store the event link
       });
 
       // Store updated favorites in local storage
