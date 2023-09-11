@@ -191,27 +191,8 @@ $(document).ready(function () {
       .find(".card-text:eq(2)")
       .text()
       .replace("Location: ", "");
-    var eventImage = eventCard.find(".event-image").attr("src");
-
-    // Save the event data to the favorites
-    saveToFavorites({
-      name: eventName,
-      date: eventDate,
-      venue: venueName,
-      location: eventLocation,
-      image: eventImage,
-    });
-  });
-
-  function saveToFavorites(eventData) {
-    // Save the event data to the localStorage
-    var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    favorites.push(eventData);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-
-    // Update the favorites display
-    displayFavorites();
-  }
+    var eventImage = eventCard.find("img").attr("src");
+    var eventLink = eventCard.find("a").attr("href"); // Get the event link
 
     // Create an object to represent the event
     var eventObject = {
