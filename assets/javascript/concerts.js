@@ -120,7 +120,7 @@ $(document).ready(function () {
           var eventsHtml = "<h2>Upcoming Music Events</h2>";
           var favoriteButton = $("<button>")
             .text("Add to Favorites")
-            .addClass("btn btn-primary");
+            .addClass("btn btn-primary favorites");
 
           data._embedded.events.forEach(function (event) {
             var eventName = event.name;
@@ -136,14 +136,14 @@ $(document).ready(function () {
             }
 
             var imageElement = $("<img>").attr("src", eventImage);
-            imageElement.attr("style", "width: 250px");
 
             eventsHtml += `
-                        <div class="col-md-6 mb-4 mt-5">
+                        <div class="col-md-3 mb-4 mt-5">
                           <div class="event card">
                           ${favoriteButton.prop("outerHTML")}
+                              <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
                               <a href="${eventUrl}">
-                                  <img class="card-img-top" src="${eventImage}" alt="${eventName}">
+                              <div class="alert alert-primary custom-alert" role="alert">Click Here to Purchase Tickets!</div>
                               </a>
                               <div class="card-body">
                                   <h5 class="card-title">${eventName}</h5>
@@ -168,7 +168,7 @@ $(document).ready(function () {
   }
 
   // Event listener for the "Add to Favorites" button
-  $("#concertsContainer").on("click", ".btn-primary", function () {
+  $("#concertsContainer").on("click", ".favorites", function () {
     // Get the event data associated with the clicked button
     var eventCard = $(this).closest(".event");
     var eventName = eventCard.find(".card-title").text();

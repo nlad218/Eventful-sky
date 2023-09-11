@@ -12,6 +12,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="assets/css/Weather-Widgets-styles.css" />
+    <link rel="stylesheet" href="./assets/css/events.css"/>
   </head>
   <body>
     <nav class="navbar navbar-expand-md bg-body py-3">
@@ -25,6 +26,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="sports.html">Sports</a>
+            <li class="nav-item">
+              <a class="nav-link" href="myEvents.html">My Events</a>
+            </li>
           </li>
         </ul>
         <div class="search-area">
@@ -42,7 +46,7 @@
       </div>
     </nav>
     <main>
-      <section id="concertsContainer" class="container">
+      <section id="cityButtons">
         <div id="cityButtonContainer" class="text-center">
           <button id="denver" class="btn btn-primary">Denver</button>
           <button id="newYork" class="btn btn-primary">New York City</button>
@@ -53,15 +57,21 @@
           <button id="dallas" class="btn btn-primary">Dallas</button>
           <button id="boston" class="btn btn-primary">Boston</button>
         </div>
-        <div class="row" id="eventsRow">
+        </section>
+        <section>
+        <div id="concertsContainer" class="container row mx-0">
           <!-- Concert events will be displayed here -->
         </div>
-      </section>
+        </section>
       <section id="weatherContainer" class="container">
         <div class="row" id="weatherRow"></div>
       </section>
+      
     </main>
-    <footer class="text-center py-4">
+    <footer
+    class="text-center py-4"
+    style="position: fixed; bottom: 0; width: 100%"
+  >
       <div class="container">
         <div class="row row-cols-1 row-cols-lg-3">
           <div class="col">

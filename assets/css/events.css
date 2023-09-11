@@ -1,0 +1,30 @@
+/* custom styling for click here to purchase areas on cards  */
+.custom-alert {
+  border-radius: 0%;
+  font-size: larger;
+  text-align: center;
+}
+
+.event:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* .btn-primary {
+  border-bottom-left-radius: 0%;
+  border-bottom-right-radius: 0%;
+} */
+
+.event-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card {
+  height: 100%;
+}
+
+.favorites {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
