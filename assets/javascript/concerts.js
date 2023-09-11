@@ -217,33 +217,25 @@ $(document).ready(function () {
     // Get the favorites from the localStorage
     var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-    // Display the favorites in the #favoritesContainer
-    var favoritesContainer = $("#favoritesContainer");
-    var favoritesHtml = "<h2>My Favorites</h2>";
-
-    favorites.forEach(function (favorite) {
-      favoritesHtml += `
-        <div class="card mb-3" style="max-width: 540px;">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="${favorite.image}" class="img-fluid rounded-start" alt="${favorite.name}">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">${favorite.name}</h5>
-                <p class="card-text">Date: ${favorite.date}</p>
-                <p class="card-text">Venue: ${favorite.venue}</p>
-                <p class="card-text">Location: ${favorite.location}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+    // Check if the event is already in favorites
+    var isEventInFavorites = favorites.some(function (favorite) {
+      return (
+        favorite.name === eventObject.name && favorite.date === eventObject.date
+      );
     });
 
-    favoritesContainer.html(favoritesHtml);
-  }
+    if (!isEventInFavorites) {
+      // Add the event to favorites
+      favorites.push(eventObject);
 
-  // Initial display of favorites
-  displayFavorites();
+      // Update the local storage with the updated favorites
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+
+      // Provide user feedback
+      alert("Event added to favorites!");
+    } else {
+      // Provide user feedback if the event is already in favorites
+      alert("Event is already in favorites!");
+    }
+  });
 });
