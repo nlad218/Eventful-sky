@@ -136,13 +136,12 @@ $(document).ready(function () {
             }
 
             var imageElement = $("<img>").attr("src", eventImage);
-            imageElement.attr("style", "width: 250px");
 
             eventsHtml += `
-                        <div class="col-md-6 mb-4 mt-5">
+                        <div class="col-md-3 mb-4 mt-5">
                           <div class="event card">
                           ${favoriteButton.prop("outerHTML")}
-                              <img class="card-img-none" src="${eventImage}" alt="${eventName}">
+                              <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
                               <a href="${eventUrl}">
                               <div class="alert alert-primary custom-alert" role="alert">Click Here to Purchase Tickets!</div>
                               </a>
