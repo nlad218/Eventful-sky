@@ -9,12 +9,13 @@ document.addEventListener("DOMContentLoaded", function () {
   favorites.forEach(function (event) {
     var listItem = document.createElement("li");
     listItem.innerHTML = `
-          <img src="${event.image}" alt="${event.name}" style="max-width: 100px;">
-          <h3>${event.name}</h3>
-          <p>Date: ${event.date}</p>
-          <p>Venue: ${event.venue}</p>
-          <p>Location: ${event.location}</p>
-        `;
+            <img src="${event.image}" alt="${event.name}" style="max-width: 100px;">
+            <h3>${event.name}</h3>
+            <p>Date: ${event.date}</p>
+            <p>Venue: ${event.venue}</p>
+            <p>Location: ${event.location}</p>
+            <a href="${event.link}" target="_blank">Event Link</a>
+          `;
     savedEventsList.appendChild(listItem);
   });
 
