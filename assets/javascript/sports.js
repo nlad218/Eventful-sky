@@ -42,13 +42,14 @@ $(document).ready(function () {
     selectedCity = "Boston";
     fetchWeatherAndSportsData(selectedCity);
   });
+
   function fetchWeatherData(city) {
     var apiKey = "0210813d87f5e7c72760631806e4bd7d";
     var weatherContainer = $("#weatherRow");
 
     $.ajax({
       type: "GET",
-      url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`,
+      url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`, // Add "&units=imperial" to get temperatures in Fahrenheit
       async: true,
       dataType: "json",
       success: function (data) {
@@ -62,9 +63,9 @@ $(document).ready(function () {
             <div class="card m-2" style="width: 18rem;">
               <div class="card-body">
                 <h5 class="card-title">Date/Time: ${forecast.dt_txt}</h5>
-                <p class="card-text">Temperature: ${(
-                  forecast.main.temp - 273.15
-                ).toFixed(2)}°C</p>
+                <p class="card-text">Temperature: ${forecast.main.temp.toFixed(
+                  2
+                )}°F</p> <!-- Display temperature in Fahrenheit -->
                 <p class="card-text">Weather: ${
                   forecast.weather[0].description
                 }</p>
