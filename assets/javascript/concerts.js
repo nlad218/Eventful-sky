@@ -92,7 +92,6 @@ $(document).ready(function () {
     });
   }
 
-  // Function to fetch sports events from Ticketmaster API
   function fetchSportsEvents(city) {
     var apiKey = "dyJlprt5GV4U77gi63lcD1hjTcNSPTsi";
     var concertsContainer = $("#concertsContainer");
@@ -117,12 +116,12 @@ $(document).ready(function () {
           });
 
           // Display sports events (concerts) in chronological order
-          var eventsHtml = "";
+          var eventsHtml = "<div class='row'>"; // Start a new row here
           var favoriteButton = $("<button>")
             .text("Add to Favorites")
             .addClass("btn btn-primary favorites");
 
-          data._embedded.events.forEach(function (event) {
+          data._embedded.events.forEach(function (event, index) {
             var eventName = event.name;
             var eventDate = event.dates.start.localDate;
             var venueName = event._embedded.venues[0].name;
@@ -139,7 +138,7 @@ $(document).ready(function () {
 
             eventsHtml += `
                     <div class="col-md-3 mb-4 mt-5">
-                      <div class="event card">
+                      <div class="event card h-100">
                       ${favoriteButton.prop("outerHTML")}
                           <img class="event-image img-fluid" src="${eventImage}" alt="${eventName}">
                           <a href="${eventUrl}">
@@ -154,8 +153,16 @@ $(document).ready(function () {
                       </div>
                     </div>
                   `;
+
+            if (
+              (index + 1) % 4 === 0 &&
+              index !== data._embedded.events.length - 1
+            ) {
+              eventsHtml += "</div><div class='row'>"; // End the current row and start a new one every 4th index
+            }
           });
 
+          eventsHtml += "</div>"; // End the row here
           concertsContainer.html(eventsHtml);
         } else {
           concertsContainer.html("<p>No music events found.</p>");
@@ -166,6 +173,7 @@ $(document).ready(function () {
       },
     });
   }
+
   // Event listener for the "Add to Favorites" button
   $("#concertsContainer").on("click", ".favorites", function () {
     // Get the event data associated with the clicked button
