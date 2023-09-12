@@ -1,14 +1,12 @@
-# Project-one-
+# Eventful-sky
 
 ## Description
 
-This Event Planner was created to help fans find local concerts and sporting events. Additionally, local weather for the respective cities is displayed so fans can plan their outfits.
+Eventful Sky was created to help fans find local concerts and sporting events. Additionally, local weather for the respective cities is displayed so fans can plan their outfits.
 
 ## Installation
 
 N/A
-
-## Usage
 
 ## Credits
 
